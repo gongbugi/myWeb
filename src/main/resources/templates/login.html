@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>로그인</title>
+    <title>Login</title>
     <style>
         body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; }
         form { border: 1px solid #ccc; padding: 20px; border-radius: 8px; }
@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<h1>로그인</h1>
+<h1>Login</h1>
 <form action="/login" method="post">
     <div>
         <label for="userid">사용자 아이디:</label>
@@ -26,7 +26,7 @@
         <button type="submit">로그인</button>
     </div>
 </form>
-<p>계정이 없으신가요? <a href="/signup">회원가입</a></p>
+<p>계정이 없으신가요? <a th:href="@{/signup}">회원가입</a></p>
 
 </body>
 </html>
