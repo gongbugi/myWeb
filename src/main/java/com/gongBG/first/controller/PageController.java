@@ -11,17 +11,17 @@ public class PageController {
     }
 
     @GetMapping("/main")
-    String mainPage(){
+    String mainPage() {
         return "main";
     }
 
     @GetMapping("/login")
-    String loginPage(){
+    String loginPage() {
         return "login";
     }
 
     @GetMapping("/signup")
-    String signupPage(){
+    String signupPage() {
         return "signup";
     }
 
