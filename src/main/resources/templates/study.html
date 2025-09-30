@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>main page</title>
+    <title>Study Page</title>
     <style>
         body { font-family: sans-serif; }
         header { border-bottom: 1px solid #ccc; padding: 10px 0; }
@@ -10,7 +10,19 @@
         nav ul li { margin: 0 20px; }
         nav ul li a { text-decoration: none; color: #333; font-weight: bold; font-size: 18px; }
         nav ul li a:hover { color: #007bff; }
-        .content { text-align: center; padding-top: 50px; }
+        .container { display: flex; }
+        .sidebar { width: 200px; border-right: 1px solid #ccc; padding: 20px; }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar ul li { margin-bottom: 10px; }
+        .sidebar ul li a { text-decoration: none; color: #333; }
+        .main-content { flex-grow: 1; padding: 20px; }
+        .post-list { list-style: none; padding: 0; }
+        .post-list li { border-bottom: 1px solid #eee; padding: 15px 0; }
+        .post-list li:last-child { border-bottom: none; }
+        .post-list h3 { margin: 0 0 10px; }
+        .post-list p { margin: 0; color: #666; }
+        .write-button-container { text-align: right; margin-bottom: 20px; }
+        .write-button { padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -25,8 +37,37 @@
     </nav>
 </header>
 
-<div class="content">
-    <h1>Study 페이지에 오신 것을 환영합니다!</h1>
+<div class="container">
+    <aside class="sidebar">
+        <h2>Categories</h2>
+        <ul>
+            <li><a href="#">All</a></li>
+            <li><a href="#">Java</a></li>
+            <li><a href="#">Spring</a></li>
+            <li><a href="#">Database</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="write-button-container">
+            <a href="/write" class="write-button">글쓰기</a>
+        </div>
+        <h1>Study Posts</h1>
+        <ul class="post-list">
+            <li>
+                <h3>Spring Boot JWT Tutorial</h3>
+                <p>How to implement JSON Web Tokens in a Spring Boot application for authentication.</p>
+            </li>
+            <li>
+                <h3>JPA N+1 Problem</h3>
+                <p>Understanding and solving the N+1 query problem in JPA and Hibernate.</p>
+            </li>
+            <li>
+                <h3>Advanced SQL Queries</h3>
+                <p>A look at advanced SQL queries, including window functions and CTEs.</p>
+            </li>
+        </ul>
+    </main>
 </div>
 
 </body>

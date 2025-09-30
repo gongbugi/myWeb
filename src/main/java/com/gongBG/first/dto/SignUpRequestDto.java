@@ -9,3 +9,5 @@ public class SignUpRequestDto {
     private String userid;
     private  String password;
 }
+
+
