@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,7 +28,10 @@ public class PageController {
     }
 
     @GetMapping("/login")
-    String loginPage() {
+    String loginPage(HttpSession session) {
+        if (session.getAttribute("loginUser") != null) {
+            return "redirect:/main";
+        }
         return "login";
     }
 
@@ -44,9 +48,6 @@ public class PageController {
     @GetMapping("/study")
     public String studyPage(Model model, @RequestParam(required = false) Long categoryId, HttpSession session) {
         String userid = (String) session.getAttribute("loginUser");
-        if (userid == null) {
-            return "redirect:/main";
-        }
         User loginUser = userRepository.findByUserid(userid)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
         model.addAttribute("categories", studyService.getCategories(loginUser));
