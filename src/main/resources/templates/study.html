@@ -41,10 +41,10 @@
     <aside class="sidebar">
         <h2>Categories</h2>
         <ul>
-            <li><a href="#">All</a></li>
-            <li><a href="#">Java</a></li>
-            <li><a href="#">Spring</a></li>
-            <li><a href="#">Database</a></li>
+            <li><a th:href="@{/study}">All</a></li>
+            <li th:each="category : ${categories}">
+                <a th:href="@{/study(categoryId=${category.id})}" th:text="${category.name}">Category Name</a>
+            </li>
         </ul>
     </aside>
 
@@ -54,17 +54,9 @@
         </div>
         <h1>Study Posts</h1>
         <ul class="post-list">
-            <li>
-                <h3>Spring Boot JWT Tutorial</h3>
-                <p>How to implement JSON Web Tokens in a Spring Boot application for authentication.</p>
-            </li>
-            <li>
-                <h3>JPA N+1 Problem</h3>
-                <p>Understanding and solving the N+1 query problem in JPA and Hibernate.</p>
-            </li>
-            <li>
-                <h3>Advanced SQL Queries</h3>
-                <p>A look at advanced SQL queries, including window functions and CTEs.</p>
+            <li th:each="post : ${posts}">
+                <h3 th:text="${post.title}">Post Title</h3>
+                <p th:text="${post.content}">Post content snippet...</p>
             </li>
         </ul>
     </main>
