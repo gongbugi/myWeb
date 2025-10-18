@@ -54,4 +54,12 @@ public class PageController {
         model.addAttribute("posts", studyService.getPosts(loginUser, categoryId));
         return "study";
     }
+
+    @GetMapping("/study/write")
+    public String writePage(Model model, @SessionAttribute(name = "loginUser") String userid) {
+        User loginUser = userRepository.findByUserid(userid)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
+        model.addAttribute("categories", studyService.getCategories(loginUser));
+        return "write";
+    }
 }

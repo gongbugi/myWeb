@@ -1,13 +1,16 @@
 package com.gongBG.first.service;
 
 import com.gongBG.first.domain.Category;
+import com.gongBG.first.domain.Post;
 import com.gongBG.first.domain.User;
+import com.gongBG.first.dto.PostRequestDto;
 import com.gongBG.first.dto.PostResponseDto;
 import com.gongBG.first.repository.CategoryRepository;
 import com.gongBG.first.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,5 +37,26 @@ public class StudyService {
     @Transactional(readOnly = true)
     public List<Category> getCategories(User user) {
         return categoryRepository.findAllByUser(user);
+    }
+
+    public void savePost(PostRequestDto requestDto, User user){
+        Category category;
+
+        if (StringUtils.hasText(requestDto.getNewCategoryName())) {
+            category = new Category(requestDto.getNewCategoryName(), user);
+            categoryRepository.save(category);
+        }
+        else if (requestDto.getCategoryId() != null) {
+            category = categoryRepository.findById(requestDto.getCategoryId())
+                    .orElseThrow(() -> new IllegalArgumentException("선택한 카테고리가 존재하지 않습니다."));
+            if (!category.getUser().getId().equals(user.getId())) {
+                throw new IllegalArgumentException("다른 사용자의 카테고리를 선택할 수 없습니다.");
+            }
+        }
+        else {
+            throw new IllegalArgumentException("카테고리를 선택하거나 새로 입력해야 합니다.");
+        }
+        Post post = new Post(requestDto.getTitle(), requestDto.getContent(), category, user);
+        postRepository.save(post);
     }
 }
