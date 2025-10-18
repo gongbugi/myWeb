@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
+@Table(uniqueConstraints = {
+        @UniqueConstraint(
+                columnNames = {"name", "user_id"}
+        )
+})
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
