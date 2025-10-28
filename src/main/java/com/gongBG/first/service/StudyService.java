@@ -59,4 +59,16 @@ public class StudyService {
         Post post = new Post(requestDto.getTitle(), requestDto.getContent(), category, user);
         postRepository.save(post);
     }
+
+    @Transactional(readOnly = true)
+    public PostResponseDto getPost(Long postId, User user){
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postId));
+
+        if (!post.getUser().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("해당 게시글을 조회할 권한이 없습니다.");
+        }
+
+        return new PostResponseDto(post);
+    }
 }
