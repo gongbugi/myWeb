@@ -19,8 +19,16 @@
         .post-list { list-style: none; padding: 0; }
         .post-list li { border-bottom: 1px solid #eee; padding: 15px 0; }
         .post-list li:last-child { border-bottom: none; }
-        .post-list h3 { margin: 0 0 10px; }
-        .post-list p { margin: 0; color: #666; }
+        .post-list h3 { margin: 0; }
+        .post-list h3 a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.2em;
+        }
+        .post-list h3 a:hover {
+            color: #007bff;
+            text-decoration: underline;
+        }
         .write-button-container { text-align: right; margin-bottom: 20px; }
         .write-button { padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; }
     </style>
@@ -55,8 +63,9 @@
         <h1>Study Posts</h1>
         <ul class="post-list">
             <li th:each="post : ${posts}">
-                <h3 th:text="${post.title}">Post Title</h3>
-                <p th:text="${post.content}">Post content snippet...</p>
+                <h3>
+                    <a th:href="@{/study/{id}(id=${post.id})}" th:text="${post.title}">Post Title</a>
+                </h3>
             </li>
         </ul>
     </main>
