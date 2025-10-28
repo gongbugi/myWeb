@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${post.title}">Post Title</title>
+    <style>
+        body { font-family: sans-serif; }
+        header { border-bottom: 1px solid #ccc; padding: 10px 0; }
+        nav ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; }
+        nav ul li { margin: 0 20px; }
+        nav ul li a { text-decoration: none; color: #333; font-weight: bold; font-size: 18px; }
+        nav ul li a:hover { color: #007bff; }
+        .post-container { max-width: 800px; margin: 40px auto; padding: 20px; }
+        .post-title { font-size: 2.5em; margin-bottom: 20px; }
+        .post-meta { color: #666; margin-bottom: 40px; }
+        .post-content { line-height: 1.8; font-size: 1.1em; }
+        .back-to-list { display: inline-block; margin-top: 40px; color: #007bff; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul>
+            <li><a th:href="@{/main}">MAIN</a></li>
+            <li><a th:href="@{/hobby}">HOBBY</a></li>
+            <li><a th:href="@{/study}">STUDY</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="post-container">
+    <h1 class="post-title" th:text="${post.title}">Post Title</h1>
+    <div class="post-meta">
+        <span>Category: </span>
+        <span th:text="${post.categoryName}">Category</span>
+    </div>
+    <div class="post-content" th:utext="${#strings.replace(post.content, T(java.lang.System).getProperty('line.separator'), '&lt;br/&gt;')}">
+        Post Content
+    </div>
+    <a th:href="@{/study}" class="back-to-list">Back to List</a>
+</div>
+
+</body>
+</html>
