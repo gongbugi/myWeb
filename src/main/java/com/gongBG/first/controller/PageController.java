@@ -84,4 +84,20 @@ public class PageController {
             return "redirect:/study";
         }
     }
+
+    @GetMapping("/study/{postId}/edit")
+    public String editPage(@PathVariable Long postId,
+                           Model model,
+                           @SessionAttribute(name = "loginUser") String userid){
+        User loginUser = userRepository.findByUserid(userid)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
+
+        PostResponseDto post = studyService.getPost(postId, loginUser);
+
+        model.addAttribute("post", post);
+        model.addAttribute("categories", studyService.getCategories(loginUser));
+
+
+        return "write";
+    }
 }
