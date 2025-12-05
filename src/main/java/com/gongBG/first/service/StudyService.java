@@ -71,4 +71,14 @@ public class StudyService {
 
         return new PostResponseDto(post);
     }
+
+    @Transactional
+    public void deletePost(Long postId, User user){
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postId));
+        if(!post.getUser().getId().equals(user.getId())){
+            throw new IllegalArgumentException("게시글 삭제 권한이 없습니다.");
+        }
+        postRepository.delete(post);
+    }
 }
