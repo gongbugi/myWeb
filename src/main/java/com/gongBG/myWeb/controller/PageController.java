@@ -1,9 +1,9 @@
-package com.gongBG.first.controller;
+package com.gongBG.myWeb.controller;
 
-import com.gongBG.first.domain.User;
-import com.gongBG.first.dto.PostResponseDto;
-import com.gongBG.first.repository.UserRepository;
-import com.gongBG.first.service.StudyService;
+import com.gongBG.myWeb.domain.User;
+import com.gongBG.myWeb.dto.PostResponseDto;
+import com.gongBG.myWeb.repository.UserRepository;
+import com.gongBG.myWeb.service.StudyService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

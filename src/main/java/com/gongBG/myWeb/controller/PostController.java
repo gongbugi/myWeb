@@ -1,9 +1,9 @@
-package com.gongBG.first.controller;
+package com.gongBG.myWeb.controller;
 
-import com.gongBG.first.domain.User;
-import com.gongBG.first.dto.PostRequestDto;
-import com.gongBG.first.repository.UserRepository;
-import com.gongBG.first.service.StudyService;
+import com.gongBG.myWeb.domain.User;
+import com.gongBG.myWeb.dto.PostRequestDto;
+import com.gongBG.myWeb.repository.UserRepository;
+import com.gongBG.myWeb.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;

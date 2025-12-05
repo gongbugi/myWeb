@@ -1,10 +1,10 @@
-package com.gongBG.first;
+package com.gongBG.myWeb;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FirstApplicationTests {
+class MyWebTests {
 
 	@Test
 	void contextLoads() {

@@ -1,4 +1,4 @@
-package com.gongBG.first.config;
+package com.gongBG.myWeb.config;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

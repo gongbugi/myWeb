@@ -1,8 +1,8 @@
-package com.gongBG.first.controller;
+package com.gongBG.myWeb.controller;
 
-import com.gongBG.first.dto.LoginRequestDto;
-import com.gongBG.first.dto.SignUpRequestDto;
-import com.gongBG.first.service.UserService;
+import com.gongBG.myWeb.dto.LoginRequestDto;
+import com.gongBG.myWeb.dto.SignUpRequestDto;
+import com.gongBG.myWeb.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;

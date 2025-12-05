@@ -1,13 +1,11 @@
-package com.gongBG.first.dto;
+package com.gongBG.myWeb.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class SignUpRequestDto {
+public class LoginRequestDto {
     private String userid;
     private  String password;
 }
-
-

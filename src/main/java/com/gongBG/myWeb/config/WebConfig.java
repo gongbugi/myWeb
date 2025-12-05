@@ -1,4 +1,4 @@
-package com.gongBG.first.config;
+package com.gongBG.myWeb.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

@@ -1,4 +1,4 @@
-package com.gongBG.first.dto;
+package com.gongBG.myWeb.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.gongBG.first.domain;
+package com.gongBG.myWeb.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;

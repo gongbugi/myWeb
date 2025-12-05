@@ -1,6 +1,6 @@
-package com.gongBG.first.repository;
+package com.gongBG.myWeb.repository;
 
-import com.gongBG.first.domain.User;
+import com.gongBG.myWeb.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

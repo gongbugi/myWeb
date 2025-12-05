@@ -1,12 +1,12 @@
-package com.gongBG.first.service;
+package com.gongBG.myWeb.service;
 
-import com.gongBG.first.domain.Category;
-import com.gongBG.first.domain.Post;
-import com.gongBG.first.domain.User;
-import com.gongBG.first.dto.PostRequestDto;
-import com.gongBG.first.dto.PostResponseDto;
-import com.gongBG.first.repository.CategoryRepository;
-import com.gongBG.first.repository.PostRepository;
+import com.gongBG.myWeb.domain.Category;
+import com.gongBG.myWeb.domain.Post;
+import com.gongBG.myWeb.domain.User;
+import com.gongBG.myWeb.dto.PostRequestDto;
+import com.gongBG.myWeb.dto.PostResponseDto;
+import com.gongBG.myWeb.repository.CategoryRepository;
+import com.gongBG.myWeb.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

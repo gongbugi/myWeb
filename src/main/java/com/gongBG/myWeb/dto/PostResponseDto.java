@@ -1,6 +1,6 @@
-package com.gongBG.first.dto;
+package com.gongBG.myWeb.dto;
 
-import com.gongBG.first.domain.Post;
+import com.gongBG.myWeb.domain.Post;
 import lombok.Getter;
 
 @Getter

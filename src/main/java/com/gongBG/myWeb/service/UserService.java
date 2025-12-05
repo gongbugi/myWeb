@@ -1,9 +1,9 @@
-package com.gongBG.first.service;
+package com.gongBG.myWeb.service;
 
-import com.gongBG.first.domain.User;
-import com.gongBG.first.dto.LoginRequestDto;
-import com.gongBG.first.dto.SignUpRequestDto;
-import com.gongBG.first.repository.UserRepository;
+import com.gongBG.myWeb.domain.User;
+import com.gongBG.myWeb.dto.LoginRequestDto;
+import com.gongBG.myWeb.dto.SignUpRequestDto;
+import com.gongBG.myWeb.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
