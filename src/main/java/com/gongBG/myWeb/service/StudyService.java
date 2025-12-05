@@ -104,4 +104,22 @@ public class StudyService {
 
         post.update(requestDto.getTitle(), requestDto.getContent(), category);
     }
+
+    @Transactional
+    public void deleteCategory(Long categoryId, User user){
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
+
+        if(!category.getUser().getId().equals(user.getId())){
+            throw new IllegalArgumentException("카테고리 삭제 권한이 없습니다.");
+        }
+
+        List<Post> posts = postRepository.findByUserAndCategoryId(user, categoryId);
+
+        if(!posts.isEmpty()){
+            throw new IllegalArgumentException("해당 카테고리에 게시글이 존재하여 삭제할 수 없습니다.");
+        }
+
+        categoryRepository.delete(category);
+    }
 }
