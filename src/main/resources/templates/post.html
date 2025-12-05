@@ -41,14 +41,23 @@
         Post Content
     </div>
 
-    <a th:href="@{/study}" class="back-to-list">Back to List</a>
+    <div style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center;">
+        <a th:href="@{/study}" class="back-to-list" style="margin-top: 0;">Back to List</a>
 
-    <form th:action="@{/study/{id}/delete(id=${post.id})}" method="post"
-          onsubmit="return confirm('정말로 이 게시글을 삭제하시겠습니까?');">
-        <button type="submit" style="padding: 10px 20px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">
-            삭제
-        </button>
-    </form>
+        <div style="display: flex; gap: 10px;">
+            <a th:href="@{/study/{id}/edit(id=${post.id})}"
+               style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">
+                수정
+            </a>
+
+            <form th:action="@{/study/{id}/delete(id=${post.id})}" method="post"
+                  onsubmit="return confirm('정말로 이 게시글을 삭제하시겠습니까?');">
+                <button type="submit" style="padding: 10px 20px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    삭제
+                </button>
+            </form>
+        </div>
+    </div>
 </div>
 
 </body>

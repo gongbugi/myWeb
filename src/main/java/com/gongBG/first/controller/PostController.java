@@ -40,4 +40,17 @@ public class PostController {
 
         return "redirect:/study";
     }
+
+    @PostMapping("/study/{postId}/edit")
+    public String updatePost(@PathVariable Long postId,
+                             @ModelAttribute PostRequestDto requestDto,
+                             @SessionAttribute(name = "loginUser") String userid) {
+
+        User loginUser = userRepository.findByUserid(userid)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
+
+        studyService.updatePost(postId, requestDto, loginUser);
+
+        return "redirect:/study/" + postId; // 수정 후 상세 페이지로 이동
+    }
 }

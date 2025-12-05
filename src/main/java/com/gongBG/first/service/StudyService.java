@@ -81,4 +81,27 @@ public class StudyService {
         }
         postRepository.delete(post);
     }
+
+    @Transactional
+    public void updatePost(Long postId, PostRequestDto requestDto, User user){
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+
+        if(!post.getUser().getId().equals(user.getId())){
+            throw new IllegalArgumentException("게시글 수정 권한이 없습니다.");
+        }
+
+        Category category;
+        if(StringUtils.hasText(requestDto.getNewCategoryName())){
+            category = new Category(requestDto.getNewCategoryName(), user);
+            categoryRepository.save(category);
+        } else if(requestDto.getCategoryId() != null){
+            category = categoryRepository.findById(requestDto.getCategoryId())
+                    .orElseThrow(() -> new IllegalArgumentException("선택한 카테고리가 존재하지 않습니다."));
+        } else {
+            throw  new IllegalArgumentException("카테고리를 선택하거나 새로 입력해야 합니다.");
+        }
+
+        post.update(requestDto.getTitle(), requestDto.getContent(), category);
+    }
 }
