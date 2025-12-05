@@ -31,14 +31,24 @@
 
 <div class="post-container">
     <h1 class="post-title" th:text="${post.title}">Post Title</h1>
+
     <div class="post-meta">
         <span>Category: </span>
         <span th:text="${post.categoryName}">Category</span>
     </div>
+
     <div class="post-content" th:utext="${#strings.replace(post.content, '\n', '&lt;br/&gt;')}">
         Post Content
     </div>
+
     <a th:href="@{/study}" class="back-to-list">Back to List</a>
+
+    <form th:action="@{/study/{id}/delete(id=${post.id})}" method="post"
+          onsubmit="return confirm('정말로 이 게시글을 삭제하시겠습니까?');">
+        <button type="submit" style="padding: 10px 20px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            삭제
+        </button>
+    </form>
 </div>
 
 </body>
