@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -52,5 +53,21 @@ public class PostController {
         studyService.updatePost(postId, requestDto, loginUser);
 
         return "redirect:/study/" + postId; // 수정 후 상세 페이지로 이동
+    }
+
+    @PostMapping("study/category/{categoryId}/delete")
+    public String deleteCategory(@PathVariable Long categoryId,
+                                 @SessionAttribute(name = "loginUser") String userid,
+                                 RedirectAttributes redirectAttributes){
+        User loginUser = userRepository.findByUserid(userid)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
+
+        try {
+            studyService.deleteCategory(categoryId, loginUser);
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addAttribute("errorMessage", e.getMessage());
+        }
+
+        return "redirect:/study";
     }
 }
