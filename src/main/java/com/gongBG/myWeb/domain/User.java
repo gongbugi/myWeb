@@ -19,10 +19,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String userid;
-
-    @Column(nullable = false)
-    private  String password;
+    private String uid;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
@@ -30,8 +27,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categories = new ArrayList<>();
 
-    public User(String userid, String password){
-        this.userid = userid;
-        this.password = password;
+    public User(String uid){
+        this.uid = uid;
     }
 }
