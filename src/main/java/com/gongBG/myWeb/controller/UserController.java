@@ -1,44 +1,31 @@
 package com.gongBG.myWeb.controller;
 
-import com.gongBG.myWeb.dto.LoginRequestDto;
-import com.gongBG.myWeb.dto.SignUpRequestDto;
 import com.gongBG.myWeb.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestAttribute(name = "loginUser") String uid) {
+
+        userService.signup(uid);
+
+        return ResponseEntity.ok("회원가입 완료");
     }
 
     @PostMapping("/login")
-    String login(@ModelAttribute LoginRequestDto requestDto, HttpServletRequest httpServletRequest){
-        try {
-            userService.login(requestDto);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return "redirect:/login";
-        }
-        HttpSession session = httpServletRequest.getSession(true);
-        session.setAttribute("loginUser", requestDto.getUserid());
-        return "redirect:/main";
-    }
-
-    @PostMapping("/signup")
-    String signup(@ModelAttribute SignUpRequestDto requestDto){
-        try {
-            userService.signup(requestDto);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return "redirect:/signup";
-        }
-        return "redirect:/login";
+    public ResponseEntity<String> login(@RequestAttribute(name = "loginUser") String uid) {
+        userService.login(uid);
+        return ResponseEntity.ok("로그인 성공");
     }
 }
