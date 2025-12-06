@@ -2,39 +2,50 @@ package com.gongBG.myWeb.controller;
 
 import com.gongBG.myWeb.domain.User;
 import com.gongBG.myWeb.dto.PostRequestDto;
+import com.gongBG.myWeb.dto.PostResponseDto;
 import com.gongBG.myWeb.repository.UserRepository;
 import com.gongBG.myWeb.service.StudyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@Controller
+@RestController
+@RequestMapping("/api/study")
 @RequiredArgsConstructor
 public class PostController {
     private final StudyService studyService;
     private final UserRepository userRepository;
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostResponseDto> getPost(@PathVariable Long postId,
+                                                   @RequestAttribute(name = "loginUser") String uid) {
 
-    @PostMapping("/study/write")
-    public String writePost(@ModelAttribute PostRequestDto requestDto,
-                            @SessionAttribute(name = "loginUser") String userid) {
+        User loginUser = userRepository.findByUid(uid)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
 
-        User loginUser = userRepository.findByUserid(userid)
+        PostResponseDto responseDto = studyService.getPost(postId, loginUser);
+
+        return ResponseEntity.ok(responseDto);
+    }
+    @PostMapping("/write")
+    public ResponseEntity<String> writePost(@RequestBody PostRequestDto requestDto,
+                                            @RequestAttribute(name = "loginUser") String uid) {
+
+        User loginUser = userRepository.findByUid(uid)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
 
         studyService.savePost(requestDto, loginUser);
 
-        return "redirect:/study";
+        return ResponseEntity.ok("게시글 등록 성공");
     }
 
     @PostMapping("/study/{postId}/delete")
     public String deletePost(@PathVariable Long postId,
-                             @SessionAttribute(name = "loginUser") String userid){
+                             @RequestAttribute(name = "loginUser") String uid){
 
-        User loginUser = userRepository.findByUserid(userid)
+        User loginUser = userRepository.findByUid(uid)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
 
         studyService.deletePost(postId, loginUser);
@@ -45,9 +56,9 @@ public class PostController {
     @PostMapping("/study/{postId}/edit")
     public String updatePost(@PathVariable Long postId,
                              @ModelAttribute PostRequestDto requestDto,
-                             @SessionAttribute(name = "loginUser") String userid) {
+                             @RequestAttribute(name = "loginUser") String uid) {
 
-        User loginUser = userRepository.findByUserid(userid)
+        User loginUser = userRepository.findByUid(uid)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
 
         studyService.updatePost(postId, requestDto, loginUser);
@@ -57,9 +68,9 @@ public class PostController {
 
     @PostMapping("study/category/{categoryId}/delete")
     public String deleteCategory(@PathVariable Long categoryId,
-                                 @SessionAttribute(name = "loginUser") String userid,
+                                 @RequestAttribute(name = "loginUser") String uid,
                                  RedirectAttributes redirectAttributes){
-        User loginUser = userRepository.findByUserid(userid)
+        User loginUser = userRepository.findByUid(uid)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
 
         try {
