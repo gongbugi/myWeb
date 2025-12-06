@@ -21,7 +21,7 @@ public class StudyController {
 
     //===1. 게시글 목록 조회===//
     @GetMapping
-    public ResponseEntity<List<PostResponseDto>> getPostList(@RequestParam Long categoryId,
+    public ResponseEntity<List<PostResponseDto>> getPostList(@RequestParam(required = false) Long categoryId,
                                                              @RequestAttribute(name = "loginUser") String uid) {
         User loginUser = userRepository.findByUid(uid)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
