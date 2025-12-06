@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Post {
+public class StudyPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +27,7 @@ public class Post {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Post(String title, String content, Category category, User user) {
+    public StudyPost(String title, String content, Category category, User user) {
         this.title = title;
         this.content = content;
         this.category = category;

@@ -2,8 +2,8 @@ package com.gongBG.myWeb.controller;
 
 import com.gongBG.myWeb.domain.Category;
 import com.gongBG.myWeb.domain.User;
-import com.gongBG.myWeb.dto.PostRequestDto;
-import com.gongBG.myWeb.dto.PostResponseDto;
+import com.gongBG.myWeb.dto.StudyPostRequestDto;
+import com.gongBG.myWeb.dto.StudyPostResponseDto;
 import com.gongBG.myWeb.repository.UserRepository;
 import com.gongBG.myWeb.service.StudyService;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +21,12 @@ public class StudyController {
 
     //===1. 게시글 목록 조회===//
     @GetMapping
-    public ResponseEntity<List<PostResponseDto>> getPostList(@RequestParam(required = false) Long categoryId,
-                                                             @RequestAttribute(name = "loginUser") String uid) {
+    public ResponseEntity<List<StudyPostResponseDto>> getPostList(@RequestParam(required = false) Long categoryId,
+                                                                  @RequestAttribute(name = "loginUser") String uid) {
         User loginUser = userRepository.findByUid(uid)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
 
-        List<PostResponseDto> posts = studyService.getPosts(loginUser, categoryId);
+        List<StudyPostResponseDto> posts = studyService.getPosts(loginUser, categoryId);
 
         return ResponseEntity.ok(posts);
     }
@@ -45,20 +45,20 @@ public class StudyController {
 
     //===3. 게시글 상세 조회===//
     @GetMapping("/{postId}")
-    public ResponseEntity<PostResponseDto> getPost(@PathVariable Long postId,
-                                                   @RequestAttribute(name = "loginUser") String uid) {
+    public ResponseEntity<StudyPostResponseDto> getPost(@PathVariable Long postId,
+                                                        @RequestAttribute(name = "loginUser") String uid) {
 
         User loginUser = userRepository.findByUid(uid)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
 
-        PostResponseDto responseDto = studyService.getPost(postId, loginUser);
+        StudyPostResponseDto responseDto = studyService.getPost(postId, loginUser);
 
         return ResponseEntity.ok(responseDto);
     }
 
     //===4. 게시글 작성===//
     @PostMapping("/write")
-    public ResponseEntity<String> writePost(@RequestBody PostRequestDto requestDto,
+    public ResponseEntity<String> writePost(@RequestBody StudyPostRequestDto requestDto,
                                             @RequestAttribute(name = "loginUser") String uid) {
 
         User loginUser = userRepository.findByUid(uid)
@@ -85,7 +85,7 @@ public class StudyController {
     //===6. 게시글 수정===//
     @PutMapping("{postId}")
     public ResponseEntity<String> updatePost(@PathVariable Long postId,
-                             @RequestBody PostRequestDto requestDto,
+                             @RequestBody StudyPostRequestDto requestDto,
                              @RequestAttribute(name = "loginUser") String uid) {
 
         User loginUser = userRepository.findByUid(uid)
