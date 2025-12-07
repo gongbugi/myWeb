@@ -83,7 +83,7 @@ public class StudyController {
     }
 
     //===6. 게시글 수정===//
-    @PutMapping("{postId}")
+    @PutMapping("/{postId}")
     public ResponseEntity<String> updatePost(@PathVariable Long postId,
                              @RequestBody StudyPostRequestDto requestDto,
                              @RequestAttribute(name = "loginUser") String uid) {
