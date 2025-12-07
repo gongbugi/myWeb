@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import type { Category, StudyPost } from "../types";
 import apiClient from "../api/axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const StudyPage = () => {
   const navigate = useNavigate();
@@ -98,9 +98,9 @@ const StudyPage = () => {
               posts.map((post) => (
                 <li key={post.id}>
                   <h3>
-                    <a href="#" onClick={(e) => {e.preventDefault; navigate('/study/${post.id}');}}>
+                    <Link to={'/study/${post.id}'}>
                       {post.title}
-                    </a>
+                    </Link>
                   </h3>
                 </li>
               ))
