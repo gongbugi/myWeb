@@ -22,7 +22,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-    font-family: inherit; /* 폰트 상속 */
+    font-family: inherit;
   }
   
   .form-group textarea {
