@@ -11,6 +11,8 @@ const StudyPage = () => {
   const [posts, setPosts] = useState<StudyPost[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
 
+  const [isEditMode, setIsEditMode] = useState(false);
+
   useEffect(() => {
     fetchCategories();
     fetchPosts(selectedCategoryId);
@@ -34,8 +36,32 @@ const StudyPage = () => {
   };
 
   const handleCategoryClick = (categoryId: number | null) => {
+    if(isEditMode) return;
+
     setSelectedCategoryId(categoryId);
     fetchPosts(categoryId);
+  };
+
+  const handleDeleteCategory = async (categoryId: number, categoryName: String) => {
+    if (!window.confirm(`'${categoryName}' 카테고리를 삭제하시겠습니까?`)) return;
+
+    try {
+      await apiClient.delete(`/study/category/${categoryId}`);
+      alert("카테고리가 삭제되었습니다.");
+
+      if (selectedCategoryId === categoryId) {
+        setSelectedCategoryId(null);
+        fetchPosts(null);
+      }
+      
+      fetchCategories();
+    } catch (error: any) {
+      const errorData = error.response?.data;
+      const errorMessage = (typeof errorData === 'object' && errorData.message)
+        ? errorData.message 
+        : (errorData || "삭제에 실패했습니다.");      
+      alert(errorMessage);
+    }
   };
 
   return (
@@ -49,6 +75,7 @@ const StudyPage = () => {
             <li>
               <button
               onClick={() => handleCategoryClick(null)}
+              disabled={isEditMode}
               style={{ 
                 background: 'none', 
                 border: 'none', 
@@ -61,7 +88,7 @@ const StudyPage = () => {
               </button>
             </li>
             {categories.map((category) => (
-              <li key={category.id}>
+              <li key={category.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <button
                   onClick={() => handleCategoryClick(category.id)}
                   style={{ 
@@ -69,20 +96,54 @@ const StudyPage = () => {
                     border: 'none', 
                     cursor: 'pointer',
                     fontWeight: selectedCategoryId === category.id ? 'bold' : 'normal',
-                    color: selectedCategoryId === category.id ? '#007bff' : '#333'
+                    color: selectedCategoryId === category.id ? '#007bff' : '#333',
+                    textAlign: 'left',
+                    flexGrow: 1
                   }}
                 >
                   {category.name}
                 </button>
+                {isEditMode && (
+                  <button
+                    onClick={() => handleDeleteCategory(category.id, category.name)}
+                    style={{
+                      border: 'none',
+                      background: '#ff4d4f',
+                      color: 'white',
+                      borderRadius: '50%',
+                      width: '20px',
+                      height: '20px',
+                      cursor: 'pointer',
+                      fontSize: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginLeft: '5px'
+                    }}
+                    title="삭제"
+                  >
+                    X
+                  </button>
+                )}
               </li>
             ))}
           </ul>
-          <button style={{ marginTop: '15px', background: 'none', border: 'none', textDecoration: 'underline', cursor: 'pointer' }}>
-            카테고리 편집
+          <button 
+            onClick={() => setIsEditMode(!isEditMode)}
+            style={{ 
+              marginTop: '15px', 
+              background: 'none', 
+              border: 'none', 
+              textDecoration: 'underline', 
+              cursor: 'pointer',
+              color: isEditMode ? '#ff4d4f' : '#666',
+              fontWeight: isEditMode ? 'bold' : 'normal'
+            }}
+          >
+            {isEditMode ? "편집 완료" : "카테고리 편집"}
           </button>
         </aside>
 
-        {/* 메인 컨텐츠 */}
         <main style={{ flexGrow: 1, padding: '20px' }}>
           <div style={{ textAlign: 'right', marginBottom: '20px' }}>
              <button
