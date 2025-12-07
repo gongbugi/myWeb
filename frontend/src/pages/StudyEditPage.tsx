@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import apiClient from "../api/axios";
 import Header from "../components/Header";
 import type { Category, StudyPostRequest, StudyPost } from "../types";
-import "./WritePage.css";
+import "./StudyWritePage.css";
 
 const StudyEditPage = () => {
   const { postId } = useParams<{ postId: string }>();
