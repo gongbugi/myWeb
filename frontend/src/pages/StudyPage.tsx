@@ -98,7 +98,7 @@ const StudyPage = () => {
               posts.map((post) => (
                 <li key={post.id}>
                   <h3>
-                    <Link to={'/study/${post.id}'}>
+                    <Link to={`/study/${post.id}`}>
                       {post.title}
                     </Link>
                   </h3>
