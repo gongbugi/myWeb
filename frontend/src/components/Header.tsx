@@ -1,10 +1,11 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
   
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -16,6 +17,8 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
+      alert("로그아웃 되었습니다.");
+      navigate("/main");
     } catch (error) {
     }
   };
@@ -31,7 +34,7 @@ const Header = () => {
         </ul>
       </nav>
 
-      <div className="header-right" style={{ width: '80px', textAlign: 'right' }}>
+      <div className="header-right" style={{ width: '100px', textAlign: 'right' }}>
         {isLoggedIn ? (
           <button
           onClick={handleLogout}
