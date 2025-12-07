@@ -56,11 +56,7 @@ const StudyPage = () => {
       
       fetchCategories();
     } catch (error: any) {
-      const errorData = error.response?.data;
-      const errorMessage = (typeof errorData === 'object' && errorData.message)
-        ? errorData.message 
-        : (errorData || "삭제에 실패했습니다.");      
-      alert(errorMessage);
+      alert("삭제에 실패했습니다.");
     }
   };
 
