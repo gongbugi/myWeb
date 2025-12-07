@@ -12,3 +12,10 @@ export interface Category {
     categoryName: string;
     categoryId: number;
   }
+
+  export interface StudyPostRequest {
+    title: string;
+    content: string;
+    categoryId?: number | null;
+    newCategoryName?: string;
+  }
