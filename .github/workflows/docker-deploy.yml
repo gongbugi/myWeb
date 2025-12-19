@@ -88,6 +88,7 @@ jobs:
       - name: Create .env file
         run: |
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > .env
+          echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
 
       # 파일 전송
       - name: Copy Docker files to EC2
