@@ -45,6 +45,8 @@ services:
       - "80:80"
     networks:
       - myweb-network
+    depends_on:
+      - backend
 
 networks:
   myweb-network:
