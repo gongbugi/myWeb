@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main", "develop", "feature/ci-cd" ]
+    branches: [ "main", "develop" ]
 
 jobs:
   # === 1. 백엔드 빌드 및 푸시 ===
