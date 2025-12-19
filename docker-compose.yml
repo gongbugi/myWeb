@@ -5,7 +5,7 @@ services:
     image: mysql:8.0
     container_name: myweb-db
     environment:
-      MYSQL_ROOT_PASSWORD: 2025
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: spring
     ports:
       - "3306:3306"
@@ -29,7 +29,7 @@ services:
     environment:
       DB_URL: jdbc:mysql://db:3306/spring?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       DB_USERNAME: root
-      DB_PASSWORD: 2025
+      DB_PASSWORD: ${DB_PASSWORD}
     depends_on:
       db:
         condition: service_healthy
