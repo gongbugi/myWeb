@@ -4,15 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
 @NoArgsConstructor
-@Table(uniqueConstraints = {
-        @UniqueConstraint(
-                columnNames = {"name", "user_id"}
-        )
-})
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +20,7 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    public Category(String name, User user) {
+    public Category(String name) {
         this.name = name;
-        this.user = user;
     }
 }
