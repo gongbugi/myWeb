@@ -1,8 +1,8 @@
-name: CI/CD Pipeline
+name: CD
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]
 
 jobs:
   # === 1. 백엔드 빌드 및 푸시 ===
