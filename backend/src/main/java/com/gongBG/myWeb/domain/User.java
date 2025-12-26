@@ -21,13 +21,15 @@ public class User {
     @Column(nullable = false, unique = true)
     private String uid;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudyPost> studyPosts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Category> categories = new ArrayList<>();
-
     public User(String uid){
         this.uid = uid;
+        this.role = Role.USER;
     }
 }
