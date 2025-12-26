@@ -16,6 +16,10 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        if (request.getMethod().equals("GET") && request.getRequestURI().startsWith("/api/study")) {
+            return true;
+        }
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
