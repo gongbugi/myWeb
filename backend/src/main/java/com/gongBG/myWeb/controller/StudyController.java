@@ -21,37 +21,27 @@ public class StudyController {
 
     //===1. 게시글 목록 조회===//
     @GetMapping
-    public ResponseEntity<List<StudyPostResponseDto>> getPostList(@RequestParam(required = false) Long categoryId,
-                                                                  @RequestAttribute(name = "loginUser") String uid) {
-        User loginUser = userRepository.findByUid(uid)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
+    public ResponseEntity<List<StudyPostResponseDto>> getPostList(@RequestParam(required = false) Long categoryId) {
 
-        List<StudyPostResponseDto> posts = studyService.getPosts(loginUser, categoryId);
+        List<StudyPostResponseDto> posts = studyService.getPosts(categoryId);
 
         return ResponseEntity.ok(posts);
     }
 
     //===2. 카테고리 목록 조회===//
     @GetMapping("/categories")
-    public ResponseEntity<List<Category>> getCategories(@RequestAttribute(name = "loginUser") String uid) {
+    public ResponseEntity<List<Category>> getCategories() {
 
-        User loginUser = userRepository.findByUid(uid)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
-
-        List<Category> categories = studyService.getCategories(loginUser);
+        List<Category> categories = studyService.getCategories();
 
         return ResponseEntity.ok(categories);
     }
 
     //===3. 게시글 상세 조회===//
     @GetMapping("/{postId}")
-    public ResponseEntity<StudyPostResponseDto> getPost(@PathVariable Long postId,
-                                                        @RequestAttribute(name = "loginUser") String uid) {
+    public ResponseEntity<StudyPostResponseDto> getPost(@PathVariable Long postId) {
 
-        User loginUser = userRepository.findByUid(uid)
-                .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
-
-        StudyPostResponseDto responseDto = studyService.getPost(postId, loginUser);
+        StudyPostResponseDto responseDto = studyService.getPost(postId);
 
         return ResponseEntity.ok(responseDto);
     }
