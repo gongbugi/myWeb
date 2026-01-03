@@ -53,19 +53,14 @@ public class StudyService {
             throw new IllegalArgumentException("게시글 작성 권한이 없습니다.");
         }
 
-        Category category;
+        if(requestDto.getCategoryId() == null){
+            throw new IllegalArgumentException("카테고리를 선택해야 합니다.");
+        }
 
-        if (StringUtils.hasText(requestDto.getNewCategoryName())) {
-            category = new Category(requestDto.getNewCategoryName());
-            categoryRepository.save(category);
-        }
-        else if (requestDto.getCategoryId() != null) {
-            category = categoryRepository.findById(requestDto.getCategoryId())
-                    .orElseThrow(() -> new IllegalArgumentException("선택한 카테고리가 존재하지 않습니다."));
-        }
-        else {
-            throw new IllegalArgumentException("카테고리를 선택하거나 새로 입력해야 합니다.");
-        }
+        Category category= categoryRepository.findById(requestDto.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("선택한 카테고리가 존재하지 않습니다."));;
+
+
         StudyPost studyPost = new StudyPost(requestDto.getTitle(), requestDto.getContent(), category, user);
         studyPostRepository.save(studyPost);
     }
@@ -89,19 +84,23 @@ public class StudyService {
         StudyPost studyPost = studyPostRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
 
-        Category category;
-        
-        if(StringUtils.hasText(requestDto.getNewCategoryName())){
-            category = new Category(requestDto.getNewCategoryName());
-            categoryRepository.save(category);
-        } else if(requestDto.getCategoryId() != null){
-            category = categoryRepository.findById(requestDto.getCategoryId())
-                    .orElseThrow(() -> new IllegalArgumentException("선택한 카테고리가 존재하지 않습니다."));
-        } else {
-            throw  new IllegalArgumentException("카테고리를 선택하거나 새로 입력해야 합니다.");
+        if(requestDto.getCategoryId() == null){
+            throw new IllegalArgumentException("카테고리를 선택해야 합니다.");
         }
 
+        Category category= categoryRepository.findById(requestDto.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("선택한 카테고리가 존재하지 않습니다."));;
+
         studyPost.update(requestDto.getTitle(), requestDto.getContent(), category);
+    }
+
+    @Transactional
+    public void createCategory(String name, User user) {
+        if(user.getRole() != Role.ADMIN){
+            throw new IllegalArgumentException("카테고리 생성 권한이 없습니다.");
+        }
+        Category category = new Category(name);
+        categoryRepository.save(category);
     }
 
     @Transactional

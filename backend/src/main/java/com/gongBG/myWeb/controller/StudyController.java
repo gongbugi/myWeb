@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/study")
@@ -86,7 +87,25 @@ public class StudyController {
         return ResponseEntity.ok("게시글 수정 성공");
     }
 
-    //===7. 카테고리 삭제===//
+    //===7. 카테고리 생성===//
+    @PostMapping("/category")
+    public  ResponseEntity<String> createCategory(@RequestBody Map<String, String> request,
+                                                  @RequestAttribute(name = "loginUser") String uid) {
+        User loginUser = userRepository.findByUid(uid)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
+
+        String categoryName = request.get("name");
+
+        if(categoryName == null || categoryName.trim().isEmpty()) {
+            throw new IllegalArgumentException("카테고리를 입력해주세요.");
+        }
+
+        studyService.createCategory(categoryName, loginUser);
+
+        return ResponseEntity.ok("카테고리 생성 성공");
+    }
+
+    //===8. 카테고리 삭제===//
     @DeleteMapping("/category/{categoryId}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId,
                                  @RequestAttribute(name = "loginUser") String uid) {

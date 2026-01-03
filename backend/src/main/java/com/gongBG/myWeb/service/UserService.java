@@ -5,6 +5,8 @@ import com.gongBG.myWeb.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -29,5 +31,9 @@ public class UserService {
         User user = userRepository.findByUid(uid).orElseThrow(
                 () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
+    }
+
+    public Optional<User> findByUid(String uid) {
+        return userRepository.findByUid(uid);
     }
 }

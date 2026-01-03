@@ -9,5 +9,4 @@ public class StudyPostRequestDto {
     private String title;
     private String content;
     private Long categoryId;
-    private String newCategoryName;
 }

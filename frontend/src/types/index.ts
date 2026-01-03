@@ -17,5 +17,4 @@ export interface Category {
     title: string;
     content: string;
     categoryId?: number | null;
-    newCategoryName?: string;
   }

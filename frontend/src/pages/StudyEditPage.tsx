@@ -13,8 +13,6 @@ const StudyEditPage = () => {
   const [content, setContent] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
-  const [newCategoryName, setNewCategoryName] = useState("");
-  const [isNewCategoryMode, setIsNewCategoryMode] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -49,37 +47,21 @@ const StudyEditPage = () => {
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    if (value === "addNewCategory") {
-      setIsNewCategoryMode(true);
-      setSelectedCategoryId("addNewCategory");
-    } else {
-      setIsNewCategoryMode(false);
-      setSelectedCategoryId(value);
-      setNewCategoryName("");
-    }
+    setSelectedCategoryId(value);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!selectedCategoryId || selectedCategoryId === "") {
+      alert("카테고리를 선택하세요.");
+      return;
+    }
+
     const requestDto: StudyPostRequest = {
       title,
       content,
-    };
-
-    if (isNewCategoryMode) {
-        if (!newCategoryName.trim()) {
-            alert("새로운 카테고리 이름을 입력하세요.");
-            return;
-        }
-        requestDto.newCategoryName = newCategoryName;
-        requestDto.categoryId = null;
-    } else {
-        if (!selectedCategoryId || selectedCategoryId === "") {
-            alert("카테고리를 선택하세요.");
-            return;
-        }
-        requestDto.categoryId = Number(selectedCategoryId);
+      categoryId: Number(selectedCategoryId)
     }
 
     try {
@@ -141,25 +123,9 @@ const StudyEditPage = () => {
                   {category.name}
                 </option>
               ))}
-              <option value="addNewCategory">-- 카테고리 추가 --</option>
             </select>
           </div>
-
-          {isNewCategoryMode && (
-            <div className="form-group">
-              <label htmlFor="newCategoryName">새 카테고리 입력</label>
-              <input
-                type="text"
-                id="newCategoryName"
-                name="newCategoryName"
-                placeholder="새로운 카테고리 이름을 입력하세요"
-                required={isNewCategoryMode}
-                value={newCategoryName}
-                onChange={(e) => setNewCategoryName(e.target.value)}
-              />
-            </div>
-          )}
-
+          
           <div style={{display:'flex', gap: '10px'}}>
              <button type="submit" className="submit-button">수정 완료</button>
              <button 
