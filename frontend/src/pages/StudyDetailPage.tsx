@@ -4,6 +4,7 @@ import apiClient from "../api/axios";
 import Header from "../components/Header";
 import type { StudyPost } from "../types";
 import "./StudyDetailPage.css";
+import Loading from "../components/Loading";
 
 const StudyDetailPage = () => {
   const { postId } = useParams<{ postId: string }>();
@@ -41,7 +42,7 @@ const StudyDetailPage = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading/>;
   if (!post) return <div>게시글이 없습니다.</div>;
 
   return (

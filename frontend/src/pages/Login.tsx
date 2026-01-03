@@ -3,16 +3,19 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import apiClient from "../api/axios";
+import Loading from "../components/Loading"
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setIsLoading(true);
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -29,10 +32,13 @@ const Login = () => {
       } else {
         setError("로그인 실패: " + err.message);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
     <div className="auth-wrapper">
+      {isLoading && <Loading />}
       <h1>Login</h1>
       <form className="auth-form" onSubmit={handleLogin}>
         <div className="auth-input-group">
@@ -59,7 +65,7 @@ const Login = () => {
         </div>
         {error && <p style={{color: 'red', marginBottom: '10px'}}>{error}</p>}
         <div>
-          <button type="submit" className="auth-submit-btn">로그인</button>
+          <button type="submit" className="auth-submit-btn" disabled={isLoading}>{isLoading ? "로그인 중" : "로그인"}</button>
         </div>
       </form>
       <p>
