@@ -13,12 +13,18 @@ const StudyPage = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const initFetch = async () => {
       setIsLoading(true);
-      try {      
-        await Promise.all([fetchCategories(), fetchPosts(selectedCategoryId)]);
+      try {
+        await Promise.all([
+          fetchCategories(),
+          fetchPosts(selectedCategoryId),
+          checkUserRole()
+        ]);
       } catch (error) {      
       } finally {
         setIsLoading(false);
@@ -47,6 +53,19 @@ const StudyPage = () => {
     }
   };
 
+  const checkUserRole = async () => {
+    try {
+      const response = await apiClient.get("/users/role");
+      if(response.data === "ADMIN") {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+    } catch (error) {
+      setIsAdmin(false);
+    }
+  }
+
   const handleCategoryClick = (categoryId: number | null) => {
     if(isEditMode) return;
 
@@ -69,6 +88,22 @@ const StudyPage = () => {
       fetchCategories();
     } catch (error: any) {
       alert("삭제에 실패했습니다.");
+    }
+  };
+
+  const handleAddCategory = async () => {
+    if(!newCategoryName.trim()) {
+      alert("카테고리 이름을 이력하세요.");
+      return;
+    }
+
+    try {
+      await apiClient.post("/study/category", {name: newCategoryName});
+      alert("카테고리가 생성되었습니다.");
+      setNewCategoryName("");
+      fetchCategories();
+    } catch (error: any) {
+      alert("카테고리 생성 실패");
     }
   };
 
@@ -112,7 +147,7 @@ const StudyPage = () => {
                 >
                   {category.name}
                 </button>
-                {isEditMode && (
+                {isEditMode && isAdmin && (
                   <button
                     onClick={() => handleDeleteCategory(category.id, category.name)}
                     style={{
@@ -136,8 +171,45 @@ const StudyPage = () => {
                 )}
               </li>
             ))}
+
+            {isEditMode && isAdmin && (
+              <li style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #eee' }}>
+                <div style={{ display: 'flex', gap: '5px' }}>
+                  <input
+                  type="text"
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  placeholder="새 카테고리"
+                  style={{
+                    flexGrow: 1, 
+                    padding: '5px', 
+                    fontSize: '13px',
+                    border: '1px solid #ddd',
+                    borderRadius: '4px',
+                    width: '0px'
+                  }}
+                />
+                <button
+                onClick={handleAddCategory}
+                style={{
+                  padding: '5px 8px',
+                  backgroundColor: '#28a745',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '12px',
+                  whiteSpace: 'nowrap'
+                }}
+                >
+                  추가
+                </button>
+                </div>
+              </li>
+            )}
           </ul>
-          <button 
+          {isAdmin && (
+            <button 
             onClick={() => setIsEditMode(!isEditMode)}
             style={{ 
               marginTop: '15px', 
@@ -151,15 +223,19 @@ const StudyPage = () => {
           >
             {isEditMode ? "편집 완료" : "카테고리 편집"}
           </button>
+          )}
+
         </aside>
 
         <main style={{ flexGrow: 1, padding: '20px' }}>
           <div style={{ textAlign: 'right', marginBottom: '20px' }}>
+            {isAdmin && (
              <button
              onClick={() => navigate('/study/write')}
              style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px' }}
              >글쓰기
              </button>
+            )}
           </div>
 
           <h1>Study Posts</h1>
