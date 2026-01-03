@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import type { Category, StudyPost } from "../types";
 import apiClient from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
 
 const StudyPage = () => {
   const navigate = useNavigate();
@@ -10,13 +11,24 @@ const StudyPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [posts, setPosts] = useState<StudyPost[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
-
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    fetchCategories();
-    fetchPosts(selectedCategoryId);
+    const initFetch = async () => {
+      setIsLoading(true);
+      try {      
+        await Promise.all([fetchCategories(), fetchPosts(selectedCategoryId)]);
+      } catch (error) {      
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initFetch();
   }, []);
+
+
 
   const fetchCategories = async () => {
     try {
@@ -63,6 +75,7 @@ const StudyPage = () => {
   return (
     <>
       <Header />
+      {isLoading && <Loading />}
       <div className="container">
         {/* 사이드바 */}
         <aside className="sidebar">
