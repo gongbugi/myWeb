@@ -13,7 +13,6 @@ const StudyEditPage = () => {
   const [content, setContent] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
-  const [newCategoryName, setNewCategoryName] = useState("");
 
   useEffect(() => {
     fetchCategories();
