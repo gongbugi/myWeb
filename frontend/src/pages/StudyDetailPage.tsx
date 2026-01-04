@@ -11,9 +11,11 @@ const StudyDetailPage = () => {
   const navigate = useNavigate();
   const [post, setPost] = useState<StudyPost | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     fetchPost();
+    checkUserRole();
   }, [postId]);
 
   const fetchPost = async () => {
@@ -42,6 +44,19 @@ const StudyDetailPage = () => {
     }
   };
 
+  const checkUserRole = async () => {
+    try {
+      const response = await apiClient.get("/users/role");
+      if(response.data === "ADMIN") {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+    } catch (error) {
+      setIsAdmin(false);
+    }
+  }
+
   if (loading) return <Loading/>;
   if (!post) return <div>게시글이 없습니다.</div>;
 
@@ -62,10 +77,10 @@ const StudyDetailPage = () => {
 
         <div className="button-group">
           <Link to="/study" className="back-to-list">
-            ← 목록으로 돌아가기
+            ← 목록
           </Link>
-
-          <div className="action-buttons">
+          {isAdmin && (
+            <div className="action-buttons">
             <Link to={`/study/${post.id}/edit`} className="edit-btn">
               수정
             </Link>
@@ -73,6 +88,8 @@ const StudyDetailPage = () => {
               삭제
             </button>
           </div>
+          )}
+
         </div>
       </div>
     </>
