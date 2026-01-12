@@ -21,8 +21,6 @@ public class CoffeeLogRequestDto {
     private String flavorNotes;
     private String comment;
 
-    private LocalDate drinkDate;
-
     public CoffeeLog toEntity(User user) {
         return CoffeeLog.builder()
                 .user(user)
@@ -35,7 +33,6 @@ public class CoffeeLogRequestDto {
                 .moodColors(this.moodColors)
                 .flavorNotes(this.flavorNotes)
                 .comment(this.comment)
-                .drinkDate(this.drinkDate)
                 .build();
     }
 }
