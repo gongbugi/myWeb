@@ -2,7 +2,6 @@ package com.gongBG.myWeb.dto;
 
 import com.gongBG.myWeb.domain.CoffeeLog;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -18,7 +17,7 @@ public class CoffeeLogResponseDto {
     private final String moodColors;
     private final String flavorNotes;
     private final String comment;
-    private final LocalDate drinkDate;
+    private final LocalDate createDate;
 
     public CoffeeLogResponseDto(CoffeeLog entity) {
         this.id = entity.getId();
@@ -31,6 +30,6 @@ public class CoffeeLogResponseDto {
         this.moodColors = entity.getMoodColors();
         this.flavorNotes = entity.getFlavorNotes();
         this.comment = entity.getComment();
-        this.drinkDate = entity.getDrinkDate();
+        this.createDate = entity.getCreateDate();
     }
 }

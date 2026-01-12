@@ -6,12 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class CoffeeLog {
+public class CoffeeLog extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,12 +33,10 @@ public class CoffeeLog {
     private String moodColors;
     private String flavorNotes;
     private String comment;
-    @Column(nullable = false)
-    private LocalDate drinkDate;
 
     @Builder
     public CoffeeLog(User user, String name, String country, String region, String variety, String processing,
-                     String roastingPoint, String moodColors, String flavorNotes, String comment, LocalDate drinkDate) {
+                     String roastingPoint, String moodColors, String flavorNotes, String comment) {
         this.user = user;
         this.name = name;
         this.country = country;
@@ -51,6 +47,18 @@ public class CoffeeLog {
         this.moodColors = moodColors;
         this.flavorNotes = flavorNotes;
         this.comment = comment;
-        this.drinkDate = (drinkDate != null) ? drinkDate : LocalDate.now();
+    }
+
+    public void update(String name, String country, String region, String variety, String processing,
+                       String roastingPoint, String moodColors, String flavorNotes, String comment) {
+        this.name = name;
+        this.country = country;
+        this.region = region;
+        this.variety = variety;
+        this.processing = processing;
+        this.roastingPoint = roastingPoint;
+        this.moodColors = moodColors;
+        this.flavorNotes = flavorNotes;
+        this.comment = comment;
     }
 }
