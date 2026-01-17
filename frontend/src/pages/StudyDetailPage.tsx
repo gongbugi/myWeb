@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import apiClient from "../api/axios";
 import Header from "../components/Header";
 import type { StudyPost } from "../types";
 import "./StudyDetailPage.css";
 import Loading from "../components/Loading";
+import { auth } from "../firebase";
+import { onAuthStateChanged, type User } from "firebase/auth";
 
 const StudyDetailPage = () => {
   const { postId } = useParams<{ postId: string }>();
@@ -14,8 +16,21 @@ const StudyDetailPage = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    fetchPost();
-    checkUserRole();
+    setLoading(true);
+    const unsubscribe = onAuthStateChanged(auth, async (user: User | null) => {
+      try {
+        await fetchPost();
+        if(user) {
+          await checkUserRole();
+        } else {
+          setIsAdmin(false);
+        }
+      } catch (error) {        
+      } finally {
+        setLoading(false);
+      }
+    });
+    return () => unsubscribe();
   }, [postId]);
 
   const fetchPost = async () => {
@@ -26,8 +41,6 @@ const StudyDetailPage = () => {
       console.error("게시글 로딩 실패", error);
       alert("게시글을 불러오지 못했습니다.");
       navigate("/study");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -75,21 +88,23 @@ const StudyDetailPage = () => {
           {post.content}
         </div>
 
-        <div className="button-group">
-          <Link to="/study" className="back-to-list">
-            ← 목록
-          </Link>
+        <div className="detail-buttons">
+          <button className="btn-list" onClick={() => navigate("/study")}>
+            목록으로
+          </button>
           {isAdmin && (
-            <div className="action-buttons">
-            <Link to={`/study/${post.id}/edit`} className="edit-btn">
-              수정
-            </Link>
-            <button onClick={handleDelete} className="delete-btn">
-              삭제
-            </button>
-          </div>
+            <>
+              <button 
+                className="btn-edit" 
+                onClick={() => navigate(`/study/${post.id}/edit`)}
+              >
+                수정
+              </button>
+              <button className="btn-delete" onClick={handleDelete}>
+                삭제
+              </button>
+            </>
           )}
-
         </div>
       </div>
     </>
