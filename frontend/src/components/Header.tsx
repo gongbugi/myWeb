@@ -2,6 +2,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
+import "./Header.css"
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,7 +30,14 @@ const Header = () => {
       <nav>
         <ul>
           <li><Link to="/main">MAIN</Link></li>
-          <li><Link to="/hobby">HOBBY</Link></li>
+
+          <li className="dropdown">
+            <Link to="/hobby" className="dropbtn">HOBBY</Link>
+            <div className="dropdown-content">
+              <Link to="/hobby/coffee">Coffee Note</Link>
+            </div>
+          </li>
+          
           <li><Link to="/study">STUDY</Link></li>
         </ul>
       </nav>
