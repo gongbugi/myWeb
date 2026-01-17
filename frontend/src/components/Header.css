@@ -1,0 +1,97 @@
+header {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    height: 30px;
+  }
+  
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px; 
+  }
+  
+  nav ul li a, 
+  nav ul li .dropbtn {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 10px;
+    display: block;
+  }
+  
+  nav ul li a:hover,
+  nav ul li .dropbtn:hover {
+    color: #007bff;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+    border-radius: 8px;
+    
+    top: 100%; 
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    
+    flex-direction: column;
+    padding: 8px 0;
+  }
+  
+  .dropdown-content a {
+    color: #555;
+    padding: 12px 20px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: normal;
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: flex; 
+  }
+  
+  .header-right .login-btn {
+    text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .header-right .login-btn:hover {
+    background-color: #0056b3;
+  }

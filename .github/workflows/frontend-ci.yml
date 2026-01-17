@@ -1,0 +1,33 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [ "develop" ]
+    paths:
+      - 'frontend/**'
+  pull_request:
+    branches: [ "main", "develop" ]
+    paths:
+      - 'frontend/**'
+
+jobs:
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Create Frontend Env File
+        run: |
+          echo "${{ secrets.FRONTEND_ENV_BASE64 }}" | base64 --decode > ./frontend/.env
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 빌드만 진행
+      - name: Build Frontend Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: false

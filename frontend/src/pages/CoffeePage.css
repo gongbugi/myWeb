@@ -1,0 +1,119 @@
+.coffee-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.coffee-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.coffee-header h1 {
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+  font-weight: bold;
+}
+
+.coffee-header p {
+  color: #666;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.btn-write {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-write:hover {
+  background-color: #0056b3;
+}
+
+.coffee-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.coffee-card {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.coffee-card:hover {
+  border-color: #007bff;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-color-bar {
+  height: 60px;
+  width: 100%;
+  border-bottom: 1px solid #eee;
+}
+
+.card-body {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+}
+
+.flavor-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.flavor-tag {
+  background-color: #f8f9fa;
+  color: #666;
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  font-weight: normal;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 0;
+  color: #999;
+}
+
+.empty-state-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+  display: block;
+  opacity: 0.5;
+}

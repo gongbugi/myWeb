@@ -4,6 +4,8 @@ import type { Category, StudyPost } from "../types";
 import apiClient from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
+import { auth } from "../firebase";
+import { onAuthStateChanged, type User } from "firebase/auth";
 
 const StudyPage = () => {
   const navigate = useNavigate();
@@ -17,24 +19,25 @@ const StudyPage = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const initFetch = async () => {
-      setIsLoading(true);
+    setIsLoading(true);
+    const unsubscribe = onAuthStateChanged(auth, async (user: User | null) => {
       try {
         await Promise.all([
           fetchCategories(),
-          fetchPosts(selectedCategoryId),
-          checkUserRole()
+          fetchPosts(selectedCategoryId)
         ]);
-      } catch (error) {      
+        if(user) {
+          await checkUserRole();
+        } else {
+          setIsAdmin(false);
+        }
+      } catch (error) {        
       } finally {
         setIsLoading(false);
       }
-    };
-
-    initFetch();
+    });
+    return () => unsubscribe();
   }, []);
-
-
 
   const fetchCategories = async () => {
     try {

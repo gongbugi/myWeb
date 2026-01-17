@@ -3,7 +3,7 @@ export interface Category {
     id: number;
     name: string;
   }
-  
+
   //StudyPostResponseDto 대응
   export interface StudyPost {
     id: number;
@@ -17,4 +17,37 @@ export interface Category {
     title: string;
     content: string;
     categoryId?: number | null;
+  }
+
+  export interface CoffeeLogDetailResponse {
+    id: number;
+    name: string;
+    country?: string;
+    region?: string;
+    variety?: string;
+    processing?: string;
+    roastingPoint?: string;
+    moodColors: string;
+    flavorNotes?: string;
+    comment?: string;
+    createDate: string;
+  }
+
+  export interface CoffeeLogSummaryResponse {
+    id: number;
+    name: string;
+    moodColors: string;
+    flavorNotes?: string;
+  }
+
+  export interface CoffeeLogRequest {
+    name: string;
+    country?: string;
+    region?: string;
+    variety?: string;
+    processing?: string;
+    roastingPoint?: string;
+    moodColors: string;
+    flavorNotes?: string;
+    comment?: string;
   }
