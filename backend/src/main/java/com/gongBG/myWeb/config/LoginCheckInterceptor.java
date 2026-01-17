@@ -17,7 +17,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }
 
         if (request.getMethod().equals("GET") &&
-                request.getRequestURI().startsWith("/api/study") || request.getRequestURI().startsWith("/api/hobby")) {
+                (request.getRequestURI().startsWith("/api/study") || request.getRequestURI().startsWith("/api/hobby"))) {
             return true;
         }
 
