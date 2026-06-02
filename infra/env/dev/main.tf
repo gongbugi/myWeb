@@ -51,3 +51,19 @@ module "elasticache" {
   private_subnet_ids = module.vpc.private_subnet_ids
   redis_sg_id = module.security_group.redis_sg_id
 }
+
+module "eks" {
+  source = "../../modules/eks"
+
+  project_name = local.project_name
+  env  = local.env
+
+  subnet_ids = module.vpc.public_subnet_ids
+
+  node_group = {
+    instance_type = "t3.medium"
+    desired_size = 2
+    max_size     = 3
+    min_size     = 1
+  }
+}
