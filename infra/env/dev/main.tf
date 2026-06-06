@@ -58,7 +58,7 @@ module "eks" {
   project_name = local.project_name
   env  = local.env
 
-  subnet_ids = module.vpc.public_subnet_ids
+  subnet_ids = module.vpc.private_subnet_ids
 
   node_group = {
     instance_type = "t3.medium"
@@ -66,4 +66,15 @@ module "eks" {
     max_size     = 3
     min_size     = 1
   }
+}
+
+module "alb_controller" {
+  source = "../../modules/alb_controller"
+
+  project_name = local.project_name
+  env  = local.env
+
+  oidc_provider_arn = module.eks.oidc_provider_arn
+  oidc_provider_url = module.eks.oidc_provider_url
+  cluster_name = module.eks.cluster_name
 }
