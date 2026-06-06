@@ -67,3 +67,14 @@ module "eks" {
     min_size     = 1
   }
 }
+
+module "alb_controller" {
+  source = "../../modules/alb_controller"
+
+  project_name = local.project_name
+  env  = local.env
+
+  oidc_provider_arn = module.eks.oidc_provider_arn
+  oidc_provider_url = module.eks.oidc_provider_url
+  cluster_name = module.eks.cluster_name
+}
