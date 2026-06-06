@@ -35,7 +35,7 @@ resource "aws_rds_cluster_instance" "main" {
     identifier = "${var.project_name}-${var.env}-aurora-instance-${count.index + 1}"
     cluster_identifier = aws_rds_cluster.main.id
 
-    instance_class = "db.t3medium"
+    instance_class = "db.t3.medium"
     engine = aws_rds_cluster.main.engine
     engine_version = aws_rds_cluster.main.engine_version
 

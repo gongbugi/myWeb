@@ -58,7 +58,7 @@ module "eks" {
   project_name = local.project_name
   env  = local.env
 
-  subnet_ids = module.vpc.public_subnet_ids
+  subnet_ids = module.vpc.private_subnet_ids
 
   node_group = {
     instance_type = "t3.medium"
