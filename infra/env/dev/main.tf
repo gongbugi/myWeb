@@ -77,4 +77,13 @@ module "alb_controller" {
   oidc_provider_arn = module.eks.oidc_provider_arn
   oidc_provider_url = module.eks.oidc_provider_url
   cluster_name = module.eks.cluster_name
+
+  depends_on = [module.eks]
+}
+
+module "frontend" {
+  source = "../../modules/frontend"
+
+  project_name = local.project_name
+  env  = local.env
 }
