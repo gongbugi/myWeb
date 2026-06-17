@@ -87,3 +87,10 @@ module "cognito" {
   project_name = local.project_name
   env          = local.env
 }
+
+module "ecr" {
+  source = "../../modules/ecr"
+
+  project_name = local.project_name
+  env          = local.env
+}
