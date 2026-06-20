@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: myweb-backend-service
+spec:
+  selector:
+    app: myweb-backend
+  ports:
+    - port: 80
+      targetPort: 8080
