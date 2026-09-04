@@ -36,8 +36,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    // Firebase Admin SDK 추가
-    implementation 'com.google.firebase:firebase-admin:9.2.0'
+    // Spring Security & OAuth2 (Cognito JWT 검증용)
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
+    // Redis & Spring Session
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.session:spring-session-data-redis'
 
 	testRuntimeOnly 'com.h2database:h2'
 }
