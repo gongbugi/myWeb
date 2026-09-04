@@ -14,10 +14,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestAttribute(name = "loginUser") String uid) {
-
+    public ResponseEntity<String> signup(@RequestBody java.util.Map<String, String> body) {
+        String uid = body.get("uid");
+        if (uid == null) {
+            return ResponseEntity.badRequest().body("uid is required");
+        }
         userService.signup(uid);
-
         return ResponseEntity.ok("회원가입 완료");
     }
 
