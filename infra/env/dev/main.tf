@@ -79,6 +79,7 @@ module "frontend" {
 
   project_name = local.project_name
   env          = local.env
+  alb_domain   = "k8s-default-mywebbac-d7c56c4292-359256208.ap-northeast-2.elb.amazonaws.com"
 }
 
 module "cognito" {
