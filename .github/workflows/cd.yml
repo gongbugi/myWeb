@@ -1,8 +1,12 @@
 name: CD
 
+# ⚠️ 이 워크플로는 1기 아키텍처(Docker Hub + 단일 EC2 + docker-compose)를 대상으로 한다.
+#    2기 마이그레이션으로 배포 대상이 ECR + EKS로 바뀌었으므로 현재 내용은 유효하지 않다.
+#
+#    잘못된 대상으로 자동 배포되는 것을 막기 위해 push 트리거를 제거하고 수동 실행으로 전환한다.
+#    ECR + EKS 기준으로 재작성한 뒤 push 트리거를 복구할 것.
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   # === 1. 백엔드 빌드 및 푸시 ===
@@ -17,11 +21,6 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-
-      - name: Create Firebase Key File
-        run: |
-          mkdir -p ./backend/src/main/resources
-          echo "${{ secrets.FIREBASE_KEY_BASE64 }}" | base64 --decode > ./backend/src/main/resources/serviceAccountKey.json
 
       # Gradle 권한 부여
       - name: Grant execute permission for gradlew

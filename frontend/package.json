@@ -7,11 +7,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "aws s3 sync dist/ s3://myweb-dev-frontend-gong-0514 --delete"
   },
   "dependencies": {
+    "amazon-cognito-identity-js": "^6.3.16",
     "axios": "^1.13.2",
-    "firebase": "^12.6.0",
     "react": "^19.2.0",
     "react-color": "^2.19.3",
     "react-dom": "^19.2.0",

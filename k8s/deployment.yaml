@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myweb-backend-deployment
+spec:
+  selector:
+    matchLabels:
+      app: myweb-backend
+  template:
+    metadata:
+      labels:
+        app: myweb-backend
+    spec:
+      containers:
+      - name: myweb-backend
+        image: <AWS_ACCOUNT_ID>.dkr.ecr.ap-northeast-2.amazonaws.com/myweb-dev-backend-gong-0514:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        - name: DB_URL
+          value: "jdbc:mysql://<AURORA_CLUSTER_ENDPOINT>:3306/spring"
+        - name: DB_USERNAME
+          value: "admin"
+        - name: DB_PASSWORD
+          value: "<AURORA_PASSWORD>"

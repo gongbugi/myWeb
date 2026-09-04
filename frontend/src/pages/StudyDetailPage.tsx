@@ -5,8 +5,7 @@ import Header from "../components/Header";
 import type { StudyPost } from "../types";
 import "./StudyDetailPage.css";
 import Loading from "../components/Loading";
-import { auth } from "../firebase";
-import { onAuthStateChanged, type User } from "firebase/auth";
+import { auth, onAuthStateChanged } from "../cognito";
 
 const StudyDetailPage = () => {
   const { postId } = useParams<{ postId: string }>();
@@ -17,7 +16,7 @@ const StudyDetailPage = () => {
 
   useEffect(() => {
     setLoading(true);
-    const unsubscribe = onAuthStateChanged(auth, async (user: User | null) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
       try {
         await fetchPost();
         if(user) {

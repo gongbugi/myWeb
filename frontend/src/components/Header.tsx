@@ -1,7 +1,6 @@
-import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../firebase";
+import { auth, onAuthStateChanged, signOut } from "../cognito";
 import "./Header.css"
 
 const Header = () => {
@@ -9,7 +8,7 @@ const Header = () => {
   const navigate = useNavigate();
   
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: any) => {
       setIsLoggedIn(!!user); 
     });
     return () => unsubscribe();

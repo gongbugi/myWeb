@@ -3,8 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import apiClient from "../api/axios";
-import { auth } from "../firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import { auth, onAuthStateChanged } from "../cognito";
 import { getCoffeeLog, deleteCoffeeLog } from "../api/coffeeLog";
 import type { CoffeeLogDetailResponse } from "../types";
 import "./CoffeeDetailPage.css";
@@ -21,7 +20,7 @@ const CoffeeDetailPage = () => {
     if (!id) return;
     setIsLoading(true);
 
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
       try {
         const logData = await getCoffeeLog(Number(id));
         setLog(logData);
