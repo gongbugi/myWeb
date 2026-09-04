@@ -1,24 +1,23 @@
 import { useEffect, useState } from "react";
+import apiClient from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
-import apiClient from "../api/axios";
-import { auth } from "../firebase";
-import { onAuthStateChanged, type User } from "firebase/auth";
+import { auth, onAuthStateChanged } from "../cognito";
 import { getCoffeeLogs } from "../api/coffeeLog";
 import type { CoffeeLogSummaryResponse } from "../types";
 import "./CoffeePage.css";
 
 const CoffeePage = () => {
   const navigate = useNavigate();
-  
+
   const [logs, setLogs] = useState<CoffeeLogSummaryResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
-    const unsubscribe = onAuthStateChanged(auth, async (user: User | null) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user: any) => {
       try {
         const logsData = await getCoffeeLogs();
         setLogs(logsData);
@@ -56,7 +55,6 @@ const CoffeePage = () => {
         setIsAdmin(true);
       }
     } catch (error) {
-      console.log("Not Admin");
       setIsAdmin(false);
     }
   };
@@ -65,14 +63,14 @@ const CoffeePage = () => {
     <>
       <Header />
       {isLoading && <Loading />}
-      
+
       <div className="coffee-container">
         <div className="coffee-header">
           <div>
             <h1>Coffee Notes</h1>
           </div>
           {isAdmin && (
-            <button 
+            <button
               className="btn-write"
               onClick={() => navigate("/hobby/coffee/write")}
             >
@@ -88,19 +86,19 @@ const CoffeePage = () => {
             </div>
           ) : (
             logs.map((log) => (
-              <div 
-                key={log.id} 
+              <div
+                key={log.id}
                 className="coffee-card"
                 onClick={() => handleCardClick(log.id)}
               >
-                <div 
-                  className="card-color-bar" 
+                <div
+                  className="card-color-bar"
                   style={getMoodStyle(log.moodColors)}
                 />
-                
+
                 <div className="card-body">
                   <h3 className="card-title">{log.name}</h3>
-                  
+
                   <div className="flavor-tags">
                     {log.flavorNotes ? (
                       log.flavorNotes.split(",").map((note, idx) => (

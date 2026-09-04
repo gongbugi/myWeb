@@ -1,9 +1,9 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../firebase";
+import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
+import { userPool } from "../cognito";
 import apiClient from "../api/axios";
-import Loading from "../components/Loading"
+import Loading from "../components/Loading";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,25 +17,42 @@ const Login = () => {
     setError("");
     setIsLoading(true);
 
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
+    const authenticationDetails = new AuthenticationDetails({
+      Username: email,
+      Password: password,
+    });
 
-      await apiClient.post("/users/login");
+    const cognitoUser = new CognitoUser({
+      Username: email,
+      Pool: userPool,
+    });
 
-      navigate("/main");
-    } catch (err : any) {
-      console.error(err);
-      if (err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
-        setError("아이디 또는 비밀번호가 잘못되었습니다.");
-      } else if (err.response) {
-        setError("서버 오류: " + (err.response.data || "알 수 없는 오류"));
-      } else {
-        setError("로그인 실패: " + err.message);
+    cognitoUser.authenticateUser(authenticationDetails, {
+      onSuccess: async () => {
+        try {
+          await apiClient.post("/users/login");
+          navigate("/main");
+        } catch (backendErr: any) {
+          console.error(backendErr);
+          const errData = backendErr.response?.data;
+          setError("서버 오류: " + (typeof errData === 'string' ? errData : JSON.stringify(errData) || backendErr.message));
+          setIsLoading(false);
+        }
+      },
+      onFailure: (err) => {
+        setIsLoading(false);
+        console.error(err);
+        if (err.name === 'NotAuthorizedException' || err.name === 'UserNotFoundException') {
+          setError("아이디 또는 비밀번호가 잘못되었습니다.");
+        } else if (err.name === 'UserNotConfirmedException') {
+          setError("이메일 인증이 완료되지 않았습니다.");
+        } else {
+          setError("로그인 실패: " + err.message);
+        }
       }
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
+
   return (
     <div className="auth-wrapper">
       {isLoading && <Loading />}

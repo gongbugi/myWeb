@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAuth } from 'firebase/auth';
+import { userPool } from '../cognito';
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
@@ -10,12 +10,20 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   async (config) => {
-    const auth = getAuth();
-    const user = auth.currentUser;
+    const cognitoUser = userPool.getCurrentUser();
 
-    if (user) {
-      const token = await user.getIdToken();
-      config.headers.Authorization = `Bearer ${token}`;
+    if (cognitoUser) {
+      await new Promise<void>((resolve, reject) => {
+        cognitoUser.getSession((err: any, session: any) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          const token = session.getIdToken().getJwtToken();
+          config.headers.Authorization = `Bearer ${token}`;
+          resolve();
+        });
+      });
     }
     return config;
   },
