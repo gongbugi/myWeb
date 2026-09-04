@@ -7,3 +7,8 @@ variable "env" {
     description = "환경 (dev/prod)"
     type        = string
 }
+
+variable "alb_domain" {
+  description = "Backend ALB Domain Name"
+  type        = string
+}

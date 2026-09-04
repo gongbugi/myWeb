@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { CognitoUserAttribute } from "amazon-cognito-identity-js";
+import { userPool } from "../cognito";
 import apiClient from "../api/axios";
 import Loading from "../components/Loading";
 
@@ -16,29 +16,40 @@ const Signup = () => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
 
-      await apiClient.post("/users/signup");
+    const attributeList = [
+      new CognitoUserAttribute({ Name: "email", Value: email })
+    ];
 
-      alert("회원가입이 완료되었습니다!");
-      // 로그인 페이지로 이동
-      navigate("/login");
-
-    } catch (err: any) {
-      console.error(err);
-      if (err.code === 'auth/email-already-in-use') {
-        setError("이미 사용 중인 이메일입니다.");
-      } else if (err.response && err.response.data) {
-        setError("서버 오류: " + err.response.data); 
-      } else {
-        setError("회원가입 실패: " + err.message);
+    userPool.signUp(email, password, attributeList, [], async (err, result) => {
+      if (err) {
+        setIsLoading(false);
+        console.error(err);
+        if (err.name === 'UsernameExistsException') {
+          setError("이미 사용 중인 이메일입니다.");
+        } else {
+          setError("회원가입 실패: " + err.message);
+        }
+        return;
       }
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
+      try {
+        const uid = result?.userSub;
+        await apiClient.post("/users/signup", { uid });
+        alert("회원가입 완료! 이메일로 발송된 '인증 링크'를 클릭한 후 로그인해주세요.");
+        navigate("/login");
+      } catch (backendErr: any) {
+        console.error(backendErr);
+        if (backendErr.response && backendErr.response.data) {
+          setError("서버 오류: " + (typeof backendErr.response.data === 'string' ? backendErr.response.data : JSON.stringify(backendErr.response.data))); 
+        } else {
+          setError("서버 연동 실패: " + backendErr.message);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    });
+  };
 
   return (
     <div className="auth-wrapper">
